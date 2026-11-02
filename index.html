@@ -563,16 +563,33 @@ function confirmDelete() {
   renderHome();
 }
 
-// ============ 导出（导出当前查看的月份）============
-function exportData() {
+// ============ 导出（导出当前查看的月份，优先调起系统分享面板）============
+async function exportData() {
   const y = viewMonth.getFullYear(), m = viewMonth.getMonth();
   const monthRecords = getRecords().filter(r => {
     const d = new Date(r.time);
     return d.getFullYear() === y && d.getMonth() === m;
   });
   if (monthRecords.length === 0) { showToast('这个月没有记录可导出'); return; }
-  const fname = `账单_${y}${(m+1).toString().padStart(2,'0')}.json`;
-  const blob = new Blob([JSON.stringify(monthRecords, null, 2)], { type: 'application/json' });
+  const fname = `账单_${y}${(m + 1).toString().padStart(2, '0')}.json`;
+  const content = JSON.stringify(monthRecords, null, 2);
+
+  // iPhone：调起系统分享面板，可直接选微信发送
+  if (navigator.canShare) {
+    try {
+      const file = new File([content], fname, { type: 'application/json' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: fname, text: `${y}年${m + 1}月账单` });
+        showToast('已分享');
+        return;
+      }
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+    }
+  }
+
+  // 桌面或其他浏览器：直接下载
+  const blob = new Blob([content], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = fname;
