@@ -17,14 +17,6 @@
   }
   .app { max-width: 420px; margin: 0 auto; min-height: 100vh; background: #F2F2F7; position: relative; }
 
-  /* 状态栏 */
-  .status-bar {
-    height: 44px; display: flex; align-items: flex-end; justify-content: space-between;
-    padding: 0 24px 6px; font-size: 15px; font-weight: 600; background: #F2F2F7;
-  }
-  .status-bar .icons { display: flex; gap: 5px; align-items: center; }
-  .status-bar .icons svg { width: 16px; height: 11px; }
-
   /* 导航栏 */
   .nav-bar {
     height: 44px; display: flex; align-items: center; justify-content: center;
@@ -188,14 +180,6 @@
 
   <!-- ============ 首页 ============ -->
   <div class="page active" id="page-home">
-    <div class="status-bar">
-      <span id="clock">9:41</span>
-      <span class="icons">
-        <svg viewBox="0 0 18 12" fill="currentColor"><path d="M1 8h2v3H1zM5 6h2v5H5zM9 4h2v7H9zM13 2h2v9h-2z"/></svg>
-        <svg viewBox="0 0 16 12" fill="currentColor"><path d="M8 2C5 2 2.5 3 1 4.5L2.5 6C3.7 4.8 5.7 4 8 4s4.3.8 5.5 2L15 4.5C13.5 3 11 2 8 2zm0 3c-1.7 0-3.2.7-4.2 1.8L5.3 8.3C6 7.5 7 7 8 7s2 .5 2.7 1.3l1.5-1.5C11.2 5.7 9.7 5 8 5zm0 3c-.6 0-1.1.2-1.5.6L8 10l1.5-1.4c-.4-.4-.9-.6-1.5-.6z"/></svg>
-        <svg viewBox="0 0 26 12" fill="currentColor"><rect x="1" y="1" width="21" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1"/><rect x="3" y="3" width="17" height="6" rx="1" fill="currentColor"/><rect x="23" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg>
-      </span>
-    </div>
     <div class="nav-bar">
       <div class="title">我的账单</div>
       <div class="right">
@@ -228,7 +212,6 @@
 
   <!-- ============ 记一笔 ============ -->
   <div class="page" id="page-add">
-    <div class="status-bar"><span id="clock2">9:41</span><span class="icons"><svg viewBox="0 0 18 12" fill="currentColor"><path d="M1 8h2v3H1zM5 6h2v5H5zM9 4h2v7H9zM13 2h2v9h-2z"/></svg><svg viewBox="0 0 16 12" fill="currentColor"><path d="M8 2C5 2 2.5 3 1 4.5L2.5 6C3.7 4.8 5.7 4 8 4s4.3.8 5.5 2L15 4.5C13.5 3 11 2 8 2zm0 3c-1.7 0-3.2.7-4.2 1.8L5.3 8.3C6 7.5 7 7 8 7s2 .5 2.7 1.3l1.5-1.5C11.2 5.7 9.7 5 8 5zm0 3c-.6 0-1.1.2-1.5.6L8 10l1.5-1.4c-.4-.4-.9-.6-1.5-.6z"/></svg><svg viewBox="0 0 26 12" fill="currentColor"><rect x="1" y="1" width="21" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1"/><rect x="3" y="3" width="17" height="6" rx="1" fill="currentColor"/><rect x="23" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg></span></div>
     <div class="nav-bar">
       <div class="left" onclick="goHome()">取消</div>
       <div class="title" id="add-title">记一笔</div>
@@ -258,7 +241,6 @@
 
   <!-- ============ 确认页 ============ -->
   <div class="page" id="page-confirm">
-    <div class="status-bar"><span id="clock3">9:41</span><span class="icons"><svg viewBox="0 0 18 12" fill="currentColor"><path d="M1 8h2v3H1zM5 6h2v5H5zM9 4h2v7H9zM13 2h2v9h-2z"/></svg><svg viewBox="0 0 16 12" fill="currentColor"><path d="M8 2C5 2 2.5 3 1 4.5L2.5 6C3.7 4.8 5.7 4 8 4s4.3.8 5.5 2L15 4.5C13.5 3 11 2 8 2zm0 3c-1.7 0-3.2.7-4.2 1.8L5.3 8.3C6 7.5 7 7 8 7s2 .5 2.7 1.3l1.5-1.5C11.2 5.7 9.7 5 8 5zm0 3c-.6 0-1.1.2-1.5.6L8 10l1.5-1.4c-.4-.4-.9-.6-1.5-.6z"/></svg><svg viewBox="0 0 26 12" fill="currentColor"><rect x="1" y="1" width="21" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1"/><rect x="3" y="3" width="17" height="6" rx="1" fill="currentColor"/><rect x="23" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg></span></div>
     <div class="nav-bar">
       <div class="left" onclick="goAdd()">返回</div>
       <div class="title">确认</div>
@@ -325,16 +307,6 @@ function saveRecords(records) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
 }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
-
-// ============ 时钟 ============
-function updateClock() {
-  const now = new Date();
-  const h = now.getHours().toString().padStart(2, '0');
-  const m = now.getMinutes().toString().padStart(2, '0');
-  const t = h + ':' + m;
-  ['clock','clock2','clock3'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = t; });
-}
-updateClock(); setInterval(updateClock, 30000);
 
 // ============ 页面导航 ============
 function showPage(id) {
